@@ -105,6 +105,6 @@
             get: function(id) {
                 return _fixtures[id];
             }
-        }
+        };
     });
 })(angular, _);
