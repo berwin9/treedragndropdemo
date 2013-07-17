@@ -70,6 +70,9 @@
 
                     insertPos = binaryFindInsertPos(_selectedItems, insertItem);
 
+                    // checking the reference through `item` === `item` isnt enough since somebody
+                    // could build a datasture where an item is in two places on the tree structure so
+                    // we also have to check for the depth and the index
                     if (_selectedItems[insertPos] &&
                         _selectedItems[insertPos].depth === insertItem.depth &&
                         _selectedItems[insertPos].index === insertItem.index &&
