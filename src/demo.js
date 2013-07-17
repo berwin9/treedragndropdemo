@@ -58,9 +58,7 @@
             });
         };
 
-        this.onSecondaryDragStop = function() {
-            console.log('drag stop');
-        };
+        this.onSecondaryDragStop = function() {};
 
         this.isPrimaryActive = function(item) {
             return _.any(_primaryActiveQueue, function(activeItem) {
