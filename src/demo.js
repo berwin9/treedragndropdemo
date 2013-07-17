@@ -3,7 +3,7 @@
     var app = angular.module('treedragndrop', []);
 
     // Demo on how to use the dynamic tree
-    app.controller('DemoController', [function() {
+    app.controller('DemoController', ['FixtureData', function(FixtureData) {
         var _primaryActiveQueue = null;
         var _secondaryActiveQueue = null;
 
@@ -25,36 +25,11 @@
         };
 
         this.getPrimaryTreeViewModel = function() {
-            var primary = {
-                children: [
-                    {
-                        label: 'tree 1 level 1 node 1',
-                        children: [
-                            { label: 'tree 1 level 2 node 1' },
-                            { label: 'tree 1 level 2 node 2' },
-                            { label: 'tree 1 level 2 node 3' }
-                        ]
-                    }
-                ]
-            };
-            return primary;
+            return FixtureData.get('primary');
         };
 
         this.getSecondaryTreeViewModel = function() {
-            var secondary = {
-                children: [
-                    {
-                        label: 'tree 2 level 1 node 1',
-                        children: [
-                            { label: 'tree 2 level 2 node 1' },
-                            { label: 'tree 2 level 2 node 2' },
-                            { label: 'tree 2 level 2 node 3' },
-                            { label: 'tree 2 level 2 node 4' }
-                        ]
-                    }
-                ]
-            };
-            return secondary;
+            return FixtureData.get('secondary');
         };
 
         this.onSecondaryDragStart = function(itemViewModel, parentViewModel) {
@@ -99,4 +74,39 @@
             });
         };
     }]);
+
+    app.factory('FixtureData', function() {
+        var _fixtures = {
+            primary: {
+                children: [
+                    {
+                        label: 'level 1 node 1',
+                        children: [
+                            { label: 'level 2 node 1' },
+                            { label: 'level 2 node 2' },
+                            { label: 'level 2 node 3' }
+                        ]
+                    }
+                ]
+            },
+            secondary: {
+                children: [
+                    {
+                        label: 'level 1 node 1',
+                        children: [
+                            { label: 'level 2 node 1' },
+                            { label: 'level 2 node 2' },
+                            { label: 'level 2 node 3' },
+                            { label: 'level 2 node 4' }
+                        ]
+                    }
+                ]
+            }
+        };
+        return {
+            get: function(id) {
+                return _fixtures[id];
+            }
+        }
+    });
 })(angular, _);
