@@ -1,3 +1,3 @@
 Quick Demo of a drag and drop tree that supports multi item select (through ctrl/cmd+click or shift+click)
 
-[http://treedragndropdemo.herokuapp.com/]
+demo: http://treedragndropdemo.herokuapp.com/
