@@ -18,25 +18,6 @@
     <body data-ng-app="treedragndrop">
         <div class="container" data-ng-controller="DemoController as demo">
             <div class="row">
-                <div class="span5 offset1">
-                    <h4>droppable tree</h4>
-                    <div class="center-block">
-                        <div id="primary-tree" class="tree-view"
-                            data-ens-tree="{
-                                onClick: demo.onPrimaryTreeClick,
-                                getChildren: demo.getChildren,
-                                getLabel: demo.getLabel,
-                                root: demo.getPrimaryTreeViewModel(),
-                                draggable: false,
-                                droppable: true,
-                                onDropAccept: demo.onPrimaryDropAccept,
-                                onDrop: demo.onPrimaryDrop,
-                                isActive: demo.isPrimaryActive
-                            }">
-                        </div>
-                    </div>
-                </div>
-
                 <div class="span6">
                     <h4>you can drag items from this tree to the droppable tree</h4>
                     <div id="secondary-tree" class="tree-view"
@@ -49,6 +30,23 @@
                             droppable: false,
                             onDragStart: demo.onSecondaryDragStart,
                             isActive: demo.isSecondaryActive
+                        }">
+                    </div>
+                </div>
+
+                <div class="span6">
+                    <h4>droppable tree</h4>
+                    <div id="primary-tree" class="tree-view"
+                        data-ens-tree="{
+                            onClick: demo.onPrimaryTreeClick,
+                            getChildren: demo.getChildren,
+                            getLabel: demo.getLabel,
+                            root: demo.getPrimaryTreeViewModel(),
+                            draggable: false,
+                            droppable: true,
+                            onDropAccept: demo.onPrimaryDropAccept,
+                            onDrop: demo.onPrimaryDrop,
+                            isActive: demo.isPrimaryActive
                         }">
                     </div>
                 </div>
