@@ -2,8 +2,7 @@
     'use strict';
     var app = angular.module('treedragndrop', []);
 
-    // Demo on how to use the dynamic tree
-    app.controller('DemoController', ['FixtureData', function(FixtureData) {
+    app.controller('DemoCtrl', ['FixtureData', function(FixtureData) {
         var _primaryActiveQueue = null;
         var _secondaryActiveQueue = null;
 
@@ -33,7 +32,6 @@
         };
 
         this.onSecondaryDragStart = function(itemViewModel, parentViewModel) {
-            console.log(itemViewModel === parentViewModel);
             return {
                 itemViewModels: _secondaryActiveQueue,
                 parentViewModel: parentViewModel
@@ -44,6 +42,9 @@
             return true;
         };
 
+        // We receive the targetItem that the drop event occured on as well as a token object
+        // that acts as a transport that holds the collection of items being dropped as well as their parent.
+        // this lets us manipulate the data structure behind the treeview
         this.onPrimaryDrop = function(targetItem, token) {
             _.each(token.itemViewModels, function(itemViewModel) {
                 var collection = token.parentViewModel.children;
