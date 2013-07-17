@@ -14,7 +14,6 @@
             _secondaryActiveQueue = selected;
         };
 
-
         this.getChildren = function(item) {
             return item.children;
         };
