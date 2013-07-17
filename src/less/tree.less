@@ -1,0 +1,77 @@
+.tree-view {
+
+    > ul.tree-node-col {
+        margin: 0;
+    }
+
+    ul {
+        margin: 0 0 6px 18px;
+    }
+    ul, li {
+        list-style: none;
+    }
+
+    .tree-node-container {
+        .text-overflow();
+    }
+
+    .tree-node-anchor {
+    }
+
+    .tree-node-label {
+    }
+
+    .tree-node-anchor.active {
+        background-color: @green;
+    }
+
+    .composite-node {
+        cursor: pointer;
+        > .tree-node-container >.tree-node-anchor {
+            > .icon-tree-node {
+                &:before {
+                    content: "\f114";
+                }
+            }
+        }
+
+        > .tree-node-container > .icon-tree-toggle {
+            &:before {
+                content: "\f0da";
+            }
+        }
+
+        > .tree-node-col {
+            .hide();
+        }
+
+        &.open {
+            > .tree-node-container > .tree-node-anchor {
+                .icon-tree-node {
+                    &:before {
+                        content: "\f115";
+                    }
+                }
+            }
+
+            > .tree-node-container > .icon-tree-toggle {
+                &:before {
+                    content: "\f0d7";
+                }
+            }
+
+            > .tree-node-col {
+                .show();
+            }
+        }
+    }
+
+    .leaf-node {
+        cursor: pointer;
+        .icon-tree-node {
+            &:before {
+                content: "\f016";
+            }
+        }
+    }
+}

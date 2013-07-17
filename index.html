@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="vendor/jquery-1.9.1.js"></script>
+        <script src="vendor/jqueryui.js"></script>
+        <script src="vendor/underscore-min.js"></script>
+        <script src="vendor/angular.1.1.5.js"></script>
+        <script src="src/demo.js"></script>
+        <script src="src/directives/dragndrop.js"></script>
+        <script src="src/directives/dynatree.js"></script>
+        <link rel="stylesheet" href="app.css" type="text/css"></link>
+        <style>
+            body {
+                padding-top: 60px;
+            }
+        </style>
+    </head>
+    <body data-ng-app="treedragndrop">
+        <div class="container" data-ng-controller="DemoController as demo">
+            <div class="row">
+                <div class="span5 offset1">
+                    <h3>droppable</h3>
+                    <div class="center-block">
+                        <div id="primary-tree" class="tree-view"
+                            data-ens-tree="{
+                                onClick: demo.onPrimaryTreeClick,
+                                getChildren: demo.getChildren,
+                                getLabel: demo.getLabel,
+                                root: demo.getPrimaryTreeViewModel(),
+                                draggable: false,
+                                droppable: true,
+                                onDropAccept: demo.onPrimaryDropAccept,
+                                onDrop: demo.onPrimaryDrop,
+                                isActive: demo.isPrimaryActive
+                            }">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="span6">
+                    <h3>draggable</h3>
+                    <div id="secondary-tree" class="tree-view"
+                        data-ens-tree="{
+                            onClick: demo.onSecondaryTreeClick,
+                            root: demo.getSecondaryTreeViewModel(),
+                            getChildren: demo.getChildren,
+                            getLabel: demo.getLabel,
+                            draggable: true,
+                            droppable: false,
+                            onDragStart: demo.onSecondaryDragStart,
+                            isActive: demo.isSecondaryActive
+                        }">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

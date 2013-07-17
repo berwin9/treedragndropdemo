@@ -1,0 +1,7 @@
+<ul class="tree-node-col">
+    <li data-ng-repeat="item in getChildren(item)"
+        data-ng-include="'src/templates/tree.html'"
+        data-ng-class="getChildren(item).length ? 'composite-node' : 'leaf-node'"
+        class="open tree-node">
+    </li>
+</ul>

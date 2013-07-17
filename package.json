@@ -1,0 +1,23 @@
+{
+  "name": "project-angular",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.2.x"
+  },
+  "dependencies": {
+    "express": "3.1.x"
+  },
+  "devDependencies": {
+    "grunt": "x.x.x",
+    "grunt-init": "x.x.x",
+    "grunt-cli": "x.x.x",
+    "grunt-contrib-jshint": "x.x.x",
+    "grunt-contrib-less": "x.x.x",
+    "grunt-contrib-watch": "x.x.x",
+    "grunt-contrib-connect": "x.x.x",
+    "grunt-regarde": "x.x.x",
+    "grunt-contrib-livereload": "x.x.x"
+  }
+}
