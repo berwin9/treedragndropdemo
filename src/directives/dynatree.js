@@ -45,8 +45,8 @@
                 scope.onClick = function($event, item, $index, depth, fromDraggable, collection) {
                     var startPos, endPos;
                     function dispatchClickHandler() {
-                        getter.onClick($event, item, $index, _.map(_selectedItems, function(item) {
-                            return item.item;
+                        getter.onClick($event, item, $index, _.map(_selectedItems, function(insertToken) {
+                            return insertToken.item;
                         }));
                     }
                     var clearSelectedItems = false;
