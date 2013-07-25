@@ -1,11 +1,32 @@
-(function(angular, _) {
+(function(angular, $) {
     'use strict';
     var module = angular.module('treedragndrop');
 
-    module.directive('ensTree', ['$parse', function($parse) {
-        function binaryFindInsertPos(list, item) {
-            return _.sortedIndex(list, item, function(curitem) {
-                return curitem.index;
+    module.directive('ensTree', function($parse) {
+        // NOTE: we reimplement underscores `sortedIndex` and `identity` functions (to lose the underscore dependency)
+        // which help implement the `binaryFindInsertPos` function
+        function identity(value) { return value; };
+
+        function sortedIndex(array, obj, iterator, context) {
+            var low, mid, high, value;
+
+            iterator = iterator == null ? identity : iterator;
+            value = iterator.call(context, obj);
+            low = 0;
+            high = array.length;
+
+            while (low < high) {
+                mid = (low + high) >>> 1;
+                iterator.call(context, array[mid]) < value
+                    ? low = mid + 1
+                    : high = mid;
+            }
+            return low;
+        }
+
+        function binaryFindInsertPos(list, searchItem) {
+            return sortedIndex(list, searchItem, function(curItem) {
+                return curItem.index;
             });
         }
 
@@ -14,11 +35,13 @@
         }
         return {
             templateUrl: 'src/templates/treeroot.html',
-            scope: true,
+            scope: {
+                getter: '&ensTree'
+            },
             link: function ensTreeLink(scope, elem, attrs) {
                 var _selectedItems = [];
                 var _prevSelectedPos = -1;
-                var getter = $parse(attrs.ensTree)(scope);
+                var getter = scope.getter();
                 var onContextmenu = getter.onContextMenu || null;
                 scope.item = getter.root;
                 // assign all hooks to be used in the templates. let the user of the component
@@ -43,16 +66,15 @@
                 // initiating a drag n drop
                 /*jshint maxcomplexity: 10*/
                 scope.onClick = function($event, item, $index, depth, fromDraggable, collection) {
-                    var startPos, endPos;
+                    var startPos, endPos, clearSelectedItems, isDuplicateInsert, insertItem, insertPos;
+
                     function dispatchClickHandler() {
                         getter.onClick($event, item, $index, _.map(_selectedItems, function(insertToken) {
                             return insertToken.item;
                         }));
                     }
-                    var clearSelectedItems = false;
-                    var isDuplicateInsert = false;
-                    var insertItem = buildInsertToken(item, $index, depth);
-                    var insertPos = 0;
+                    insertItem = buildInsertToken(item, $index, depth);
+                    insertPos = 0;
 
                     // handle both nix systems and windows
                     var metaKeyOn = !(!$event.metaKey && !$event.ctrlKey);
@@ -71,14 +93,12 @@
                     insertPos = binaryFindInsertPos(_selectedItems, insertItem);
 
                     // checking the reference through `item` === `item` isnt enough since somebody
-                    // could build a datasture where an item is in two places on the tree structure so
+                    // could build a data structure where an item is in two places on the tree structure so
                     // we also have to check for the depth and the index
-                    if (_selectedItems[insertPos] &&
+                    isDuplicateInsert = _selectedItems[insertPos] &&
                         _selectedItems[insertPos].depth === insertItem.depth &&
                         _selectedItems[insertPos].index === insertItem.index &&
-                        _selectedItems[insertPos].item === insertItem.item) {
-                        isDuplicateInsert = true;
-                    }
+                        _selectedItems[insertPos].item === insertItem.item
 
                     //TODO: be aware that if we allow new child nodes to be added to the tree
                     //then the index that we are caching is no longer valid. we can fix this by either
@@ -114,7 +134,7 @@
                     // also if it is from draggable and it is not already in the list, we clear the `_selectedItems`
                     // and just set this current selectedItem as the active one.
                     // this mimics normal windows behavior for click/drag functionality
-                    if (!fromDraggable || (fromDraggable && !isDuplicateInsert)) clearSelectedItems = true;
+                    clearSelectedItems = (!fromDraggable || (fromDraggable && !isDuplicateInsert));
                     if (clearSelectedItems) {
                         _selectedItems.length = 0;
                         _prevSelectedPos = insertItem.index;
@@ -136,5 +156,5 @@
                 }
             }
         };
-    }]);
-})(angular, _);
+    });
+})(angular, jQuery);
