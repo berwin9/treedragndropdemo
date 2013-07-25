@@ -1,3 +1,12 @@
+/**
+ * dynatree.js
+ * ~~~~~~~~~~~~~~
+ * a dynamic tree that adds multi select and drag and drop support.
+ *
+ * @author erwin.mombay
+ *
+ */
+
 (function(angular, $, _) {
     'use strict';
     var module = angular.module('treedragndrop');

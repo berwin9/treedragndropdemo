@@ -1,3 +1,12 @@
+/**
+ * demo.js
+ * ~~~~~~~~~~~~~~
+ * demo code that interacts with the drag and drop tree.
+ *
+ * @author erwin.mombay
+ *
+ */
+
 (function(angular, _) {
     'use strict';
     var app = angular.module('treedragndrop', []);
