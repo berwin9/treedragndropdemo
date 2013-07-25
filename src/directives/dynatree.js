@@ -14,6 +14,11 @@
     // TODO: remove the underscore dependency when we get a chance.
     module.directive('ensTree', function($parse) {
         var _defaults = {
+            isDraggable: false,
+            isDroppable: false,
+            getChildren: angular.noop,
+            getLabel: angular.noop,
+            isActive: angular.noop,
             onDropAccept: angular.noop,
             onDrop: angular.noop,
             onDragStart: angular.noop,
