@@ -30,21 +30,22 @@
             return FixtureData.get('secondary');
         };
 
-        this.onSecondaryDragStart = function(itemViewModel, parentViewModel) {
+        this.onPrimaryDragStart = function(itemViewModel, parentViewModel) {
             return {
-                itemViewModels: _secondaryActiveQueue,
+                itemViewModels: _primaryActiveQueue,
                 parentViewModel: parentViewModel
             };
         };
 
-        this.onPrimaryDropAccept = function() {
+        this.onSecondaryDropAccept = function() {
             return true;
         };
 
         // We receive the targetItem that the drop event occured on as well as a token object
         // that acts as a transport that holds the collection of items being dropped as well as their parent.
         // this lets us manipulate the data structure behind the treeview
-        this.onPrimaryDrop = function(targetItem, token) {
+        this.onSecondaryDrop = function(targetItem, token) {
+            console.log(targetItem, token);
             _.each(token.itemViewModels, function(itemViewModel) {
                 var collection = token.parentViewModel.children;
                 var index = collection.indexOf(itemViewModel);
@@ -58,7 +59,7 @@
             });
         };
 
-        this.onSecondaryDragStop = function() {};
+        this.onPrimaryDragStop = function() {};
 
         this.isPrimaryActive = function(item) {
             return _.any(_primaryActiveQueue, function(activeItem) {
@@ -82,7 +83,11 @@
                         children: [
                             { label: 'level 2 node 1' },
                             { label: 'level 2 node 2' },
-                            { label: 'level 2 node 3' }
+                            { label: 'level 2 node 3' },
+                            { label: 'level 2 node 4' },
+                            { label: 'level 2 node 5' },
+                            { label: 'level 2 node 6' },
+                            { label: 'level 2 node 7' }
                         ]
                     }
                 ]

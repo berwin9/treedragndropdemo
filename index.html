@@ -12,7 +12,7 @@
         <div class="container" data-ng-controller="DemoCtrl as demo">
             <div class="row">
                 <div class="span6">
-                    <h4>you can drag items from this tree to a tree node droppable tree (supports multi-select through ctrl/cmd-click and shift click if on the same depth)</h4>
+                    <h4>you can drag items from the left hand side tree to a node on right hand side tree (supports multi-select through ctrl/cmd-click and shift click if on the same depth)</h4>
                 </div>
                 <div class="span6">
                     <h4>droppable tree</h4>
@@ -20,32 +20,32 @@
             </div>
             <div class="row">
                 <div class="span6">
-                    <div id="secondary-tree" class="tree-view"
+                    <div id="primary-tree" class="tree-view"
                         data-ens-tree="{
-                            onClick: demo.onSecondaryTreeClick,
-                            root: demo.getSecondaryTreeViewModel(),
+                            onClick: demo.onPrimaryTreeClick,
+                            root: demo.getPrimaryTreeViewModel(),
                             getChildren: demo.getChildren,
                             getLabel: demo.getLabel,
-                            draggable: true,
-                            droppable: false,
-                            onDragStart: demo.onSecondaryDragStart,
-                            isActive: demo.isSecondaryActive
+                            isDraggable: true,
+                            isDroppable: false,
+                            onDragStart: demo.onPrimaryDragStart,
+                            isActive: demo.isPrimaryActive
                         }">
                     </div>
                 </div>
 
                 <div class="span6">
-                    <div id="primary-tree" class="tree-view"
+                    <div id="secondary-tree" class="tree-view"
                         data-ens-tree="{
-                            onClick: demo.onPrimaryTreeClick,
+                            onClick: demo.onSecondaryTreeClick,
                             getChildren: demo.getChildren,
                             getLabel: demo.getLabel,
-                            root: demo.getPrimaryTreeViewModel(),
-                            draggable: false,
-                            droppable: true,
-                            onDropAccept: demo.onPrimaryDropAccept,
-                            onDrop: demo.onPrimaryDrop,
-                            isActive: demo.isPrimaryActive
+                            root: demo.getSecondaryTreeViewModel(),
+                            isDraggable: false,
+                            isDroppable: true,
+                            onDropAccept: demo.onSecondaryDropAccept,
+                            onDrop: demo.onSecondaryDrop,
+                            isActive: demo.isSecondaryActive
                         }">
                     </div>
                 </div>
