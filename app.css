@@ -1963,7 +1963,7 @@ table th[class*="span"],
   white-space: nowrap;
 }
 .tree-view .tree-node-anchor.active {
-  background-color: #46a546;
+  background-color: #eee;
 }
 .tree-view .composite-node {
   cursor: pointer;
@@ -1991,6 +1991,12 @@ table th[class*="span"],
 }
 .tree-view .leaf-node .icon-tree-node:before {
   content: "\f016";
+}
+.ens-tree-dnd-target-active {
+  border: 1px dashed orange;
+}
+.ens-tree-dnd-target-over {
+  border: 1px solid lightgreen;
 }
 /*@import "buttons.less";*/
 /*@import "button-groups.less";*/
