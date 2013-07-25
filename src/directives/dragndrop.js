@@ -17,7 +17,7 @@
 
     module.directive('ensTreeDragStart', ['$parse', function($parse) {
         return {
-            link: function(scope, elem, attrs) {
+            link: function ensTreeDragStart(scope, elem, attrs) {
                 if ($parse(attrs.ensTreeDraggable)(scope) === true) {
                     var dragStartExp = attrs.ensTreeDragStart || '';
                     var dragEndExp = attrs.ensTreeDragEnd || '';
@@ -70,7 +70,7 @@
 
     module.directive('ensTreeDropCommit', ['$parse', function($parse) {
         return {
-            link: function(scope, elem, attrs) {
+            link: function ensTreeDropCommit(scope, elem, attrs) {
                 var isDroppable = $parse(attrs.ensTreeDroppable)(scope);
                 if (isDroppable === true) {
                     var acceptExp = attrs.ensTreeDropAccept || '';

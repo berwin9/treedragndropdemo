@@ -45,7 +45,6 @@
         // that acts as a transport that holds the collection of items being dropped as well as their parent.
         // this lets us manipulate the data structure behind the treeview
         this.onSecondaryDrop = function(targetItem, token) {
-            console.log(targetItem, token);
             _.each(token.itemViewModels, function(itemViewModel) {
                 var collection = token.parentViewModel.children;
                 var index = collection.indexOf(itemViewModel);
