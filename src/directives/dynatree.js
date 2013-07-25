@@ -1,31 +1,19 @@
-(function(angular, $) {
+(function(angular, $, _) {
     'use strict';
     var module = angular.module('treedragndrop');
 
+    // TODO: remove the underscore dependency when we get a chance.
     module.directive('ensTree', function($parse) {
-        // NOTE: we reimplement underscores `sortedIndex` and `identity` functions (to lose the underscore dependency)
-        // which help implement the `binaryFindInsertPos` function
-        function identity(value) { return value; };
+        var _defaults = {
+            onDropAccept: angular.noop,
+            onDrop: angular.noop,
+            onDragStart: angular.noop,
+            __onClickDelegate: angular.noop,
+            onContextmenu: angular.noop
+        };
 
-        function sortedIndex(array, obj, iterator, context) {
-            var low, mid, high, value;
-
-            iterator = iterator == null ? identity : iterator;
-            value = iterator.call(context, obj);
-            low = 0;
-            high = array.length;
-
-            while (low < high) {
-                mid = (low + high) >>> 1;
-                iterator.call(context, array[mid]) < value
-                    ? low = mid + 1
-                    : high = mid;
-            }
-            return low;
-        }
-
-        function binaryFindInsertPos(list, searchItem) {
-            return sortedIndex(list, searchItem, function(curItem) {
+        function binaryFindInsertPosition(list, searchItem) {
+            return _.sortedIndex(list, searchItem, function(curItem) {
                 return curItem.index;
             });
         }
@@ -36,32 +24,35 @@
         return {
             templateUrl: 'src/templates/treeroot.html',
             scope: {
-                getter: '&ensTree'
+                getEnsTreeProps: '&ensTree'
             },
             link: function ensTreeLink(scope, elem, attrs) {
                 var _selectedItems = [];
                 var _prevSelectedPos = -1;
-                var getter = scope.getter();
-                var onContextmenu = getter.onContextMenu || null;
-                scope.item = getter.root;
-                // assign all hooks to be used in the templates. let the user of the component
-                // determine the behavior
-                scope.getChildren = getter.getChildren;
-                scope.getLabel = getter.getLabel;
-                scope.isActive = getter.isActive;
-                scope.isDraggable = !!getter.draggable;
-                scope.isDroppable = !!getter.droppable;
-                scope.onDropAccept = getter.onDropAccept || angular.noop;
-                scope.onDrop = getter.onDrop || angular.noop;
-                scope.onDragStart = getter.onDragStart || angular.noop;
-                scope.__depth = 1;
-                scope.__col = scope.getChildren(scope.item);
-                scope.getSelectedItems = function() {
-                    return _selectedItems;
-                };
+                var ensTreeProps = scope.getEnsTreeProps();
 
-                // we use ng-click so we don't have to run $apply here.
-                // we add a fromDraggable flag so that if the invocation comes from the ensTreeDragNDrop
+                // assign all hooks to be used in the templates. let the user of the component
+                // determine the behavior.
+                _.defaults(scope, {
+                    getChildren: ensTreeProps.getChildren,
+                    getLabel: ensTreeProps.getLabel,
+                    isActive: ensTreeProps.isActive,
+                    isDraggable: ensTreeProps.isDraggable,
+                    isDroppable: ensTreeProps.isDroppable,
+                    onDropAccept: ensTreeProps.onDropAccept,
+                    onDrop: ensTreeProps.onDrop,
+                    onDragStart: ensTreeProps.onDragStart,
+                    __onClickDelegate: ensTreeProps.onClick,
+                    onContextmenu: ensTreeProps.onContextmenu,
+                    item: ensTreeProps.root
+                }, _defaults);
+
+                scope.__depth = 1;
+                scope.__collection = scope.getChildren(scope.item);
+                scope.getSelectedItems = function() { return _selectedItems; };
+
+                // we use `ng-click` so we don't have to run `$apply` here.
+                // we add a `fromDraggable` flag so that if the invocation comes from the `ensTreeDragNDrop`
                 // directive we don't deselect the currently active items since the user is probably
                 // initiating a drag n drop
                 /*jshint maxcomplexity: 10*/
@@ -69,7 +60,7 @@
                     var startPos, endPos, clearSelectedItems, isDuplicateInsert, insertItem, insertPos;
 
                     function dispatchClickHandler() {
-                        getter.onClick($event, item, $index, _.map(_selectedItems, function(insertToken) {
+                        scope.__onClickDelegate($event, item, $index, _.map(_selectedItems, function(insertToken) {
                             return insertToken.item;
                         }));
                     }
@@ -82,6 +73,7 @@
 
                     // if the node we are about to insert is not on the same level then go ahead
                     // and throw away the contents of _selectedItems and push the new item into _selectedItems
+                    // this is because we only allow for multi-select if the items are all of the same depth
                     if (_selectedItems.length && depth !== _selectedItems[0].depth) {
                         _selectedItems.length = 0;
                         _prevSelectedPos = insertItem.index;
@@ -90,7 +82,7 @@
                         return;
                     }
 
-                    insertPos = binaryFindInsertPos(_selectedItems, insertItem);
+                    insertPos = binaryFindInsertPosition(_selectedItems, insertItem);
 
                     // checking the reference through `item` === `item` isnt enough since somebody
                     // could build a data structure where an item is in two places on the tree structure so
@@ -98,7 +90,7 @@
                     isDuplicateInsert = _selectedItems[insertPos] &&
                         _selectedItems[insertPos].depth === insertItem.depth &&
                         _selectedItems[insertPos].index === insertItem.index &&
-                        _selectedItems[insertPos].item === insertItem.item
+                        _selectedItems[insertPos].item === insertItem.item;
 
                     //TODO: be aware that if we allow new child nodes to be added to the tree
                     //then the index that we are caching is no longer valid. we can fix this by either
@@ -143,18 +135,18 @@
                     dispatchClickHandler();
                     return;
                 };
-                // be aware that we aren't running scope.$apply here since i don't think
+                // be aware that we aren't running `scope.$apply` here since i don't think
                 // we need to do anything when a tree node is toggled (this may change in the future)
                 elem.on('click', '.icon-tree-toggle', function(e) {
                     $(e.target).closest('.tree-node').toggleClass('open');
                 });
 
-                if (onContextmenu != null) {
+                if (scope.onContextmenu != null) {
                     elem.on('contextmenu', 'li', function(e) {
-                        onContextmenu(e);
+                        scope.onContextmenu(e);
                     });
                 }
             }
         };
     });
-})(angular, jQuery);
+})(angular, jQuery, _);

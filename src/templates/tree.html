@@ -1,15 +1,13 @@
 <div class="tree-node-container">
     <i class="icon-tree-toggle"></i>
-    <a class="tree-node-anchor" data-ng-class="{
-            active: isActive(item)
-        }"
+    <a class="tree-node-anchor"
+        data-ng-class="{ active: isActive(item) }"
+        data-ng-click="onClick($event, item, $index, __depth, false, __collection); $event.stopPropagation();"
         data-ens-tree-drag-start="onDragStart(item, $parent.$parent.item)"
-        data-ens-tree-drag-stop="onDragStop()"
         data-ens-tree-drop-accept="onDropAccept($parent.$parent.item, $token)"
         data-ens-tree-drop-commit="onDrop(item, $token)"
         data-ens-tree-droppable="isDroppable"
-        data-ens-tree-draggable="isDraggable"
-        data-ng-click="onClick($event, item, $index, __depth, false, __col); $event.stopPropagation();">
+        data-ens-tree-draggable="isDraggable">
         <i class="icon-tree-node"></i>
         <span
             title="{{ getLabel(item) }}"
@@ -19,7 +17,7 @@
     </a>
 </div>
 <ul data-ng-if="getChildren(item).length !== 0"
-    data-ng-init="__depth = $parent.__depth + 1; __col = getChildren(item)"
+    data-ng-init="__depth = $parent.__depth + 1; __collection = getChildren(item)"
     class="tree-node-col">
     <li data-ng-repeat="item in getChildren(item)"
         data-ng-include="'src/templates/tree.html'"
