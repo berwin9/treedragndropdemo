@@ -106,10 +106,10 @@
                         _selectedItems[insertPos].index === insertItem.index &&
                         _selectedItems[insertPos].item === insertItem.item;
 
-                    //TODO: be aware that if we allow new child nodes to be added to the tree
-                    //then the index that we are caching is no longer valid. we can fix this by either
-                    //invalidating/throw away whats stored on the _selectedItems array or
-                    //requery the dom get the scope from the dom elements and recache
+                    // TODO: be aware that if we allow new child nodes to be added to the tree
+                    // then the index that we are caching is no longer valid. we can fix this by either
+                    // invalidating/throw away whats stored on the _selectedItems array or
+                    // requery the dom get the scope from the dom elements and recache
                     if (shiftKeyOn && !metaKeyOn) {
                         _selectedItems.length = 0;
                         if (_prevSelectedPos >= insertItem.index) {

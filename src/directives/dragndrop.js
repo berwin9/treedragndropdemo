@@ -115,7 +115,7 @@
                                     .css({ top:'', left:'' });
                                     // TODO: fix bug wherein we call stop when the item has
                                     // already been removed from the current collection
-                                    //.draggable('option', 'stop')();
+                                    // .draggable('option', 'stop')();
                             }
                             elem.removeClass('ens-tree-dnd-target-active')
                                 .removeClass('ens-tree-dnd-target-disable')
