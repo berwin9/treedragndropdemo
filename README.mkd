@@ -1,3 +1,7 @@
 Quick Demo of a drag and drop tree that supports multi item select (through ctrl/cmd+click or shift+click)
 
 demo: http://treedragndropdemo.herokuapp.com/
+
+TODO:
+    - add unit tests
+    - remove underscorejs dependency if possible
